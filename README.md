@@ -1,61 +1,79 @@
-# 🛍️ Shop Management System
+# 🛒 Shop Management System
 
-A simple Spring Boot project that models a purchase management system for stores using Hibernate and an in-memory H2 database.
+A full-featured **Spring Boot** project modeling a **purchase management system** for stores using **Hibernate** and **H2 in-memory database**,  
+with a **user-friendly web interface** built with **Thymeleaf**.
 
 ## 🚀 Tech Stack
 
-- **Java 17+**
+- **Java 21**
 - **Spring Boot 3**
 - **Spring Data JPA (Hibernate)**
-- **H2 Database**
+- **H2 In-Memory Database**
+- **Thymeleaf Template Engine**
 - **Maven**
 
 ---
 
-## 📁 Project Structure
+## 🎨 User Interface Features
 
+- Add Categories, Products, Stores, and Customers
+- Assign Products to Categories and Stores
+- Register Purchases by entering Customer and Product names
+- Interactive Lists:
+    - Products in Category
+    - Stores selling a Product
+    - Purchases by Customer
+- View All Categories, Products, and Purchases with sorting options
 
 ---
 
-## 🔗 REST API Endpoints
+## 🛠️ REST API Endpoints
 
 | Action                                   | Method | Endpoint                                         |
 |------------------------------------------|--------|--------------------------------------------------|
 | Add a new category                       | POST   | `/categories/add`                                |
 | Add a new product                        | POST   | `/products/add`                                  |
 | Add a new store                          | POST   | `/stores/add`                                    |
-| Assign product to store                  | POST   | `/stores/{storeId}/addProduct/{productId}`       |
+| Assign product to store                  | POST   | `/stores/add-product`                            |
+| Assign product to category               | POST   | `/products/assign-category`                      |
 | Register a purchase                      | POST   | `/purchases/buy`                                 |
 | Get all products by category             | GET    | `/products/category/{categoryId}`                |
-| Get all stores that sell a product       | GET    | `/stores/by-product/{productId}`                 |
-| Get all purchases of a specific customer | GET    | `/purchases/by-customer/{customerId}`            |
+| Get all stores selling a product         | GET    | `/stores/by-product/{productId}`                 |
+| Get all purchases of a customer          | GET    | `/purchases/by-customer/{customerId}`            |
+| Get all purchases sorted by date         | GET    | `/purchases/sorted-by-date?order=asc|desc`       |
+| Get all categories                       | GET    | `/categories`                                   |
 
 ---
 
 ## 🧪 H2 Database Access
 
-- Navigate to: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
+- URL: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
 - JDBC URL: `jdbc:h2:mem:testdb`
 - User: `sa`
 - Password: *(leave empty)*
 
 ---
 
-## 📦 How to Run
+## 💻 How to Run
 
 1. Clone the repository
-2. Open the project in IntelliJ IDEA
-3. Run the `ShopApplication.java` file
-4. Test endpoints using Postman, curl, or browser
+2. Open the project in **IntelliJ IDEA**
+3. Make sure **JDK 21** is selected
+4. Run `ShopApplication.java`
+5. Open `http://localhost:8080` in your browser
+6. Access the H2 Console at `http://localhost:8080/h2-console` if needed
 
 ---
 
-## 🧠 Features Implemented
+## ✅ Features Implemented
 
-- Add products with categories
-- Register product purchases by customers
-- Query products, stores, and purchases via REST API
-- Auto-generated tables via JPA and in-memory H2
+- Add products, categories, stores, and customers via web forms
+- Link products to stores and categories
+- Register purchases by entering customer and product names
+- View interactive product, store, and purchase lists
+- Sort purchases by date (ascending or descending)
+- Styled user-friendly pages built with Thymeleaf
+- In-memory data persistence with H2 Database
 
 ---
 

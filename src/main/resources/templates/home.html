@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #d6c1b2;
+        }
+        h1, h2, label, select {
+            color: #3d2b1f;
+        }
+        form {
+            border: 1px solid #9c7b68;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background-color: #ffffff;
+        }
+        label {
+            display: inline-block;
+            width: 120px;
+            margin-bottom: 10px;
+        }
+        input {
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            border: 1px solid #9c7b68;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+            color: #3d2b1f;
+            box-sizing: border-box;
+        }
+        select {
+            padding: 5px 10px;
+            border: 1px solid #9c7b68;
+            border-radius: 4px;
+            background-color: #9c7b68;
+            color: #ffffff;
+        }
+        button {
+            display: block;
+            margin: 10px 0 0 0;
+            padding: 5px 10px;
+            border: 1px solid #9c7b68;
+            border-radius: 4px;
+            background-color: #9c7b68;
+            color: #ffffff;
+            cursor: pointer;
+        }
+        .links div, .links form {
+            margin-top: 10px;
+            border: none;
+            padding: 0;
+            background-color: #d6c1b2;
+        }
+        .links form button {
+            font-size: 14px;
+            background-color: #9c7b68;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<h1>Shop Management System</h1>
+
+<form th:action="@{/categories/add}" method="post">
+    <h2>Add New Category</h2>
+    <label>Category ID:</label> <input type="number" name="id" /><br>
+    <label>Category Name:</label> <input type="text" name="name" /><br>
+    <button type="submit">Add Category</button>
+</form>
+
+<form th:action="@{/products/add}" method="post">
+    <h2>Add New Product</h2>
+    <label>Product ID:</label> <input type="number" name="id" /><br>
+    <label>Product Name:</label> <input type="text" name="name" /><br>
+    <label>Price:</label> <input type="number" step="0.01" name="price" /><br>
+    <button type="submit">Add Product</button>
+</form>
+
+<form th:action="@{/products/assign-category}" method="post">
+    <h2>Assign Product to Category</h2>
+    <label>Product ID:</label> <input type="number" name="productId" /><br>
+    <label>Category ID:</label> <input type="number" name="categoryId" /><br>
+    <button type="submit">Assign to Category</button>
+</form>
+
+<form th:action="@{/stores/add}" method="post">
+    <h2>Add New Store</h2>
+    <label>Store ID:</label> <input type="number" name="id" /><br>
+    <label>Store Name:</label> <input type="text" name="name" /><br>
+    <label>Location:</label> <input type="text" name="location" /><br>
+    <button type="submit">Add Store</button>
+</form>
+
+<form th:action="@{/stores/add-product}" method="post">
+    <h2>Assign Product to Store</h2>
+    <label>Product ID:</label> <input type="number" name="productId" /><br>
+    <label>Store ID:</label> <input type="number" name="storeId" /><br>
+    <button type="submit">Assign Product</button>
+</form>
+
+<form th:action="@{/customers/add}" method="post">
+    <h2>Add New Customer</h2>
+    <label>Customer ID:</label> <input type="number" name="id" /><br>
+    <label>Customer Name:</label> <input type="text" name="name" /><br>
+    <label>Email:</label> <input type="email" name="email" /><br>
+    <button type="submit">Add Customer</button>
+</form>
+
+<form th:action="@{/purchases/buy}" method="post">
+    <h2>Register Purchase</h2>
+    <label>Purchase ID:</label> <input type="number" name="id" /><br>
+    <label>Customer:</label> <input type="text" name="customer" /><br>
+    <label>Product:</label> <input type="text" name="product" /><br>
+    <label>Purchase Date:</label> <input type="date" name="purchaseDate" /><br>
+    <button type="submit">Register Purchase</button>
+</form>
+
+<div class="links">
+    <h2>View Lists</h2>
+
+    <div>
+        <label>View Products in Category:</label>
+        <select onchange="if(this.value) window.location.href=this.value">
+            <option value="">Select Category</option>
+            <option th:each="category : ${categories}"
+                    th:value="@{'/products/category/' + ${category.id}}"
+                    th:text="${category.name}">
+            </option>
+        </select>
+    </div>
+
+    <div>
+        <label>View Stores with Product:</label>
+        <select onchange="if(this.value) window.location.href=this.value">
+            <option value="">Select Product</option>
+            <option th:each="product : ${products}"
+                    th:if="${product != null}"
+                    th:value="@{'/stores/by-product/' + ${product.id}}"
+                    th:text="${product.name}">
+            </option>
+        </select>
+    </div>
+
+    <div>
+        <label>View Purchases of Customer:</label>
+        <select onchange="if(this.value) window.location.href=this.value">
+            <option value="">Select Customer</option>
+            <option th:each="customer : ${customers}"
+                    th:if="${customer != null}"
+                    th:value="@{'/purchases/by-customer/' + ${customer.id}}"
+                    th:text="${customer.name}">
+            </option>
+        </select>
+    </div>
+
+    <form th:action="@{/categories}" method="get">
+        <button type="submit">View All Categories</button>
+    </form>
+
+    <form th:action="@{/purchases/sorted-by-date}" method="get">
+        <input type="hidden" name="order" value="asc" />
+        <button type="submit">View All Purchases (Ascending Date)</button>
+    </form>
+
+    <form th:action="@{/purchases/sorted-by-date}" method="get">
+        <input type="hidden" name="order" value="desc" />
+        <button type="submit">View All Purchases (Descending Date)</button>
+    </form>
+</div>
+</body>
+</html>

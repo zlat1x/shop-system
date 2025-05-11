@@ -14,6 +14,6 @@ public class ProductService {
     @Autowired private ProductRepository productRepository;
     public Product save(Product product) { return productRepository.save(product); }
     public List<Product> findByCategory(Long categoryId) {
-        return productRepository.findByCategory_Id(categoryId);
+        return productRepository.findByCategoryId(categoryId);
     }
 }

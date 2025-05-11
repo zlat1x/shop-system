@@ -1,18 +1,27 @@
 package com.example.shop.controller;
+
+import com.example.shop.entity.Customer;
+import com.example.shop.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-
-import com.example.shop.entity.*;
-import com.example.shop.repository.*;
-@RestController @RequestMapping("/customers")
+@Controller
+@RequestMapping("/customers")
 public class CustomerController {
-    @Autowired private CustomerRepository customerRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @PostMapping("/add")
-    public Customer addCustomer(@RequestBody Customer customer) {
-        return customerRepository.save(customer);
+    public String addCustomer(@RequestParam Long id,
+                              @RequestParam String name,
+                              @RequestParam String email) {
+        Customer customer = new Customer();
+        customer.setId(id);
+        customer.setName(name);
+        customer.setEmail(email);
+        customerRepository.save(customer);
+        return "redirect:/";
     }
 }

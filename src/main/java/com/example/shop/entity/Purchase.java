@@ -1,17 +1,33 @@
 package com.example.shop.entity;
+
 import jakarta.persistence.*;
 import java.time.LocalDate;
+
 @Entity
 public class Purchase {
-    @Id @GeneratedValue private Long id;
 
-    @ManyToOne private Customer customer;
-    @ManyToOne private Product product;
+    @Id
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     private LocalDate purchaseDate;
 
+    public Purchase() {
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Customer getCustomer() {

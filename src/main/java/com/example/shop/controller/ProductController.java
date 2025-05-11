@@ -1,34 +1,59 @@
 package com.example.shop.controller;
+
+import com.example.shop.entity.Product;
+import com.example.shop.entity.Category;
+import com.example.shop.repository.ProductRepository;
+import com.example.shop.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
 
 import java.util.List;
-import java.util.Map;
 
-import com.example.shop.entity.*;
-import com.example.shop.repository.*;
-import com.example.shop.service.ProductService;
-
-import java.time.LocalDate;
-
-@RestController @RequestMapping("/products")
+@Controller
+@RequestMapping("/products")
 public class ProductController {
-    @Autowired private ProductService productService;
-    @Autowired private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @PostMapping("/add")
-    public Product addProduct(@RequestBody Map<String, String> body) {
-        String name = body.get("name");
-        double price = Double.parseDouble(body.get("price"));
-        Long categoryId = Long.parseLong(body.get("categoryId"));
-        Category category = categoryRepository.findById(categoryId).orElseThrow();
-        Product p = new Product();
-        p.setName(name); p.setPrice(price); p.setCategory(category);
-        return productService.save(p);
+    public String addProduct(@RequestParam Long id,
+                             @RequestParam String name,
+                             @RequestParam double price) {
+        Product product = new Product();
+        product.setId(id);
+        product.setName(name);
+        product.setPrice(price);
+
+        productRepository.save(product);
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/assign-category")
+    public String assignProductToCategory(@RequestParam Long productId,
+                                          @RequestParam Long categoryId) {
+        Product product = productRepository.findById(productId).orElse(null);
+        Category category = categoryRepository.findById(categoryId).orElse(null);
+
+        if (product != null && category != null) {
+            product.setCategory(category);
+            productRepository.save(product);
+        }
+
+        return "redirect:/";
     }
 
     @GetMapping("/category/{categoryId}")
-    public List<Product> getByCategory(@PathVariable Long categoryId) {
-        return productService.findByCategory(categoryId);
+    public String viewProductsByCategory(@PathVariable Long categoryId, Model model) {
+        List<Product> products = productRepository.findByCategoryId(categoryId);
+        model.addAttribute("products", products);
+        return "products-list";
     }
+
 }

@@ -1,27 +1,29 @@
 package com.example.shop.entity;
+
 import jakarta.persistence.*;
-import java.util.Set;
-import java.util.List;
-import com.example.shop.entity.Store;
+
 @Entity
 public class Product {
-    @Id @GeneratedValue private Long id;
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
     private String name;
+
     private double price;
 
-    @ManyToOne private Category category;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    @ManyToMany(mappedBy = "products")
-    private Set<Store> stores;
-
-    @OneToMany(mappedBy = "product")
-    private List<Purchase> purchases;
-    public Long getId() {
-        return id;
+    // Порожній конструктор для JPA
+    public Product() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    // Геттери та сеттери
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -48,11 +50,7 @@ public class Product {
         this.category = category;
     }
 
-    public Set<Store> getStores() {
-        return stores;
-    }
-
-    public void setStores(Set<Store> stores) {
-        this.stores = stores;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

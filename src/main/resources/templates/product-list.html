@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #d6c1b2; color: #3d2b1f; }
+        a { color: #3d2b1f; text-decoration: underline; }
+    </style>
+</head>
+<body>
+<h1>Products in Category</h1>
+<ul>
+    <li th:each="product : ${products}">
+        <span th:text="${product.name}"></span> -
+        <span th:text="${product.price}"></span>$
+    </li>
+</ul>
+<a href="/">Back to Home</a>
+</body>
+</html>
